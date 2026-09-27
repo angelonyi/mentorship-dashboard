@@ -64,7 +64,14 @@ if (loginForm) {
             return;
         }
 
-        window.location.href = "dashboard.html";
+        // Check the user's role
+        const role = data.user?.app_metadata?.role;
+
+        if (role === "mentor") {
+            window.location.href = "mentor.html";
+        } else {
+            window.location.href = "dashboard.html";
+        }
     });
 }// Dashboard protection and user information
 const welcomeText = document.getElementById("welcome-text");
