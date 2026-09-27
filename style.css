@@ -743,3 +743,51 @@ p {
         font-size: 11px;
     }
 }
+
+.mentor-tools {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.mentor-tool {
+    padding: 22px;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    color: white;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.mentor-tool strong {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 16px;
+}
+
+.mentor-tool span {
+    color: rgba(255, 255, 255, 0.65);
+
+    font-size: 13px;
+}
+
+.mentor-tool:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+@media (max-width: 700px) {
+
+    .mentor-tools {
+        grid-template-columns: 1fr;
+    }
+
+}
