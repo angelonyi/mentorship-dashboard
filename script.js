@@ -1,20 +1,29 @@
 // Main website JavaScript
 // Authentication is handled in auth.js
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
     const classDate = document.getElementById("class-date");
     const classWeek = document.getElementById("class-week");
     const progressWeek = document.getElementById("progress-week");
     const progressBar = document.querySelector(".progress-bar");
     const weekIndicators = document.querySelectorAll(".week-indicator");
+    const meetLink = document.getElementById("meet-link");
 
     if (!classDate || !classWeek) return;
 
-    // Mentorship starts on Sunday, September 27, 2026
+    // ==========================================
+    // 1. PROGRAMME START DATE
+    // ==========================================
+
+    // Week 1 started on Sunday, September 27, 2026
     const startDate = new Date("2026-09-27T00:00:00+01:00");
 
-    // Get today's date and time in Nigeria
+
+    // ==========================================
+    // 2. GET CURRENT NIGERIAN DATE & TIME
+    // ==========================================
+
     const nigeriaParts = new Intl.DateTimeFormat("en-US", {
         timeZone: "Africa/Lagos",
         year: "numeric",
@@ -38,15 +47,18 @@ document.addEventListener("DOMContentLoaded", () => {
         `${nigeriaYear}-${String(nigeriaMonth).padStart(2, "0")}-${String(nigeriaDay).padStart(2, "0")}T00:00:00+01:00`
     );
 
-    // Calculate how many days have passed since the programme started
+
+    // ==========================================
+    // 3. WORK OUT THE CURRENT/NEXT WEEK
+    // ==========================================
+
     const daysPassed = Math.floor(
         (today - startDate) / (1000 * 60 * 60 * 24)
     );
 
-    // Calculate the next class week
     let weekNumber = Math.floor(daysPassed / 7) + 1;
 
-    // If it is Sunday and the class has already ended,
+    // If Sunday class has already ended at 7 PM,
     // move to the following week's class.
     const dayOfWeek = today.getDay();
 
@@ -57,11 +69,11 @@ document.addEventListener("DOMContentLoaded", () => {
         weekNumber += 1;
     }
 
-    // Keep the programme within 6 weeks
-    if (weekNumber < 1) weekNumber = 1;
 
+    // ==========================================
+    // 4. PROGRAMME COMPLETED
+    // ==========================================
 
-    // If all 6 weeks are finished
     if (weekNumber > 6) {
 
         classDate.textContent = "Programme completed";
@@ -80,11 +92,19 @@ document.addEventListener("DOMContentLoaded", () => {
             indicator.classList.remove("active");
         });
 
+        if (meetLink) {
+            meetLink.removeAttribute("href");
+            meetLink.textContent = "PROGRAMME COMPLETED";
+        }
+
         return;
     }
 
 
-    // Calculate the date of the next class
+    // ==========================================
+    // 5. CALCULATE NEXT CLASS DATE
+    // ==========================================
+
     const nextClassDate = new Date(startDate);
 
     nextClassDate.setDate(
@@ -92,7 +112,10 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    // Format the class date using Nigerian timezone
+    // ==========================================
+    // 6. DISPLAY CLASS DATE
+    // ==========================================
+
     const formattedDate = nextClassDate.toLocaleDateString("en-NG", {
         timeZone: "Africa/Lagos",
         weekday: "long",
@@ -101,26 +124,33 @@ document.addEventListener("DOMContentLoaded", () => {
         year: "numeric"
     });
 
-
-    // Display next class information
     classDate.textContent = formattedDate;
     classWeek.textContent = `Week ${weekNumber} of 6`;
 
 
-    // Update programme progress
+    // ==========================================
+    // 7. UPDATE PROGRAMME PROGRESS
+    // ==========================================
+
     if (progressWeek) {
         progressWeek.textContent = `Week ${weekNumber} of 6`;
     }
 
 
-    // Update progress bar
+    // ==========================================
+    // 8. UPDATE PROGRESS BAR
+    // ==========================================
+
     if (progressBar) {
         const progressPercentage = (weekNumber / 6) * 100;
         progressBar.style.width = `${progressPercentage}%`;
     }
 
 
-    // Update week indicators
+    // ==========================================
+    // 9. UPDATE WEEK INDICATORS
+    // ==========================================
+
     weekIndicators.forEach((indicator, index) => {
 
         const week = index + 1;
@@ -135,5 +165,39 @@ document.addEventListener("DOMContentLoaded", () => {
             indicator.classList.add("active");
         }
     });
+
+
+    // ==========================================
+    // 10. GET GOOGLE MEET LINK FROM SUPABASE
+    // ==========================================
+
+    if (meetLink) {
+
+        const { data, error } = await supabaseClient
+            .from("classes")
+            .select("meet_link")
+            .eq("week_number", weekNumber)
+            .single();
+
+        if (error) {
+
+            console.error("Could not load Meet link:", error);
+
+            meetLink.removeAttribute("href");
+            meetLink.textContent = "MEET LINK NOT AVAILABLE";
+
+        } else if (data && data.meet_link) {
+
+            // Put the Meet link on the JOIN LIVE button
+            meetLink.href = data.meet_link;
+
+        } else {
+
+            // No link has been added to Supabase yet
+            meetLink.removeAttribute("href");
+            meetLink.textContent = "MEET LINK NOT AVAILABLE";
+
+        }
+    }
 
 });
