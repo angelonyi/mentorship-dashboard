@@ -51,4 +51,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     classDate.textContent = formattedDate;
     classWeek.textContent = `Week ${weekNumber} of 6`;
+});// Update programme progress
+const progressWeek = document.getElementById("progress-week");
+const progressBar = document.querySelector(".progress-bar");
+const weekIndicators = document.querySelectorAll(".week-indicator");
+
+if (progressWeek) {
+    progressWeek.textContent = `Week ${weekNumber} of 6`;
+}
+
+if (progressBar) {
+    const progressPercentage = (weekNumber / 6) * 100;
+    progressBar.style.width = `${progressPercentage}%`;
+}
+
+weekIndicators.forEach((indicator, index) => {
+    const week = index + 1;
+
+    indicator.classList.remove("completed", "active");
+
+    if (week < weekNumber) {
+        indicator.classList.add("completed");
+    } else if (week === weekNumber) {
+        indicator.classList.add("active");
+    }
 });
