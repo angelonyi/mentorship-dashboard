@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentees | Mentor Area</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .mentees-list {
+            margin-top: 20px;
+        }
+        .mentee-card {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .mentee-card strong {
+            color: #17362a;
+            font-size: 1.1rem;
+        }
+        .mentee-card span {
+            color: #4a5c52;
+            font-size: 0.9rem;
+        }
+        .loading, .empty, .error {
+            text-align: center;
+            padding: 30px;
+            color: #17362a;
+            font-weight: 600;
+        }
+        .error {
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body class="bw-dashboard-page">
+    <main class="bw-dashboard">
+        <!-- Header -->
+        <header class="bw-header">
+            <div>
+                <p class="bw-eyebrow">BUILD WITH AI</p>
+                <h1>Enrolled Mentees</h1>
+                <p class="bw-subtitle">View all registered mentees</p>
+            </div>
+            <a href="mentor.html" class="bw-logout">Back to Dashboard</a>
+        </header>
+
+        <!-- Mentees Section -->
+        <section class="bw-main-card">
+            <div id="mentees-container">
+                <div class="loading">Loading mentees...</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
+    <script src="mentees.js"></script>
+</body>
+</html>
