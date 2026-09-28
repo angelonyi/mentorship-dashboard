@@ -30,8 +30,45 @@ document.addEventListener("DOMContentLoaded", async () => {
     const fullName =
         user.user_metadata?.full_name || "Mentor";
 
-    if (mentorName) {
-        mentorName.textContent = `Welcome, ${fullName}`;
+    // Load the next class from Supabase
+    const classDateElement = document.getElementById("mentor-class-date");
+    const classWeekElement = document.getElementById("mentor-class-week");
+
+    if (classDateElement && classWeekElement) {
+        const now = new Date();
+
+        const today =
+            `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+
+        const { data: nextClass, error: classError } = await supabaseClient
+            .from("classes")
+            .select("class_date, week_number")
+            .gte("class_date", today)
+            .order("class_date", { ascending: true })
+            .limit(1)
+            .maybeSingle();
+
+        if (classError) {
+            console.error("Error loading next class:", classError);
+            classDateElement.textContent = "Unable to load class";
+            classWeekElement.textContent = "Please try again";
+        } else if (!nextClass) {
+            classDateElement.textContent = "No upcoming classes";
+            classWeekElement.textContent = "";
+        } else {
+            const date = new Date(`${nextClass.class_date}T12:00:00`);
+
+            classDateElement.textContent = date.toLocaleDateString(
+                "en-NG",
+                {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                }
+            );
+
+            classWeekElement.textContent = `Week ${nextClass.week_number}`;
+        }
     }
 
 

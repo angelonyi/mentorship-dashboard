@@ -311,7 +311,7 @@ p {
 
 .bw-header h1 {
     margin: 0;
-    font-size: 42px;
+    font-size: 29px;
     line-height: 1.1;
     color: #17362a;
 }
@@ -351,12 +351,9 @@ p {
 
 .bw-main-card {
     background: #ffffff;
-
     border: 1px solid #e7e8df;
-    border-radius: 28px;
-
-    padding: 36px;
-
+    border-radius: 20px;
+    padding: 26px;
     box-shadow: 0 12px 35px rgba(31, 93, 66, 0.08);
 }
 
@@ -404,13 +401,13 @@ p {
 /* Programme title */
 
 .bw-title-section {
-    margin: 28px 0 34px;
+    margin: 18px 0 24px;
 }
 
 .bw-title-section h2 {
     margin: 0;
-    font-size: 36px;
-    line-height: 1.1;
+    font-size: 26px;
+    line-height: 1.3;
     color: #17362a;
 }
 
@@ -426,12 +423,9 @@ p {
 
 .bw-info-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 18px;
-
-    padding-top: 25px;
-
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding-top: 18px;
     border-top: 1px solid #edf0e9;
 }
 
@@ -451,17 +445,12 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    width: 44px;
-    height: 44px;
-
+    width: 38px;
+    height: 38px;
     flex-shrink: 0;
-
-    border-radius: 13px;
-
+    border-radius: 10px;
     background: #fff2b8;
-
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .bw-label {
@@ -479,11 +468,10 @@ p {
 
 .bw-info-item strong {
     display: block;
-
     color: #17362a;
-
-    font-size: 17px;
+    font-size: 15px;
     line-height: 1.4;
+    font-weight: 600;
 }
 
 .bw-small-text {
@@ -498,33 +486,31 @@ p {
 
 /* Join button */
 
+
+
 .bw-action-area {
-    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
 }
+
 
 .bw-join-button {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
-
-    width: 100%;
-
-    padding: 18px 24px;
-
+    width: fit-content;
+    min-width: 190px;
+    padding: 15px 24px;
     box-sizing: border-box;
-
-    border-radius: 15px;
-
+    border-radius: 12px;
     background: #1f5d42;
     color: #ffffff;
-
     text-decoration: none;
-
-    font-size: 16px;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
     transition: 0.2s ease;
 }
 
@@ -550,17 +536,15 @@ p {
 
 /* Programme progress */
 
+
 .bw-progress-card {
     margin-top: 25px;
-
-    padding: 30px 36px;
-
-    background: #17362a;
-    color: white;
-
-    border-radius: 25px;
-
-    box-shadow: 0 12px 35px rgba(23, 54, 42, 0.12);
+    padding: 26px;
+    background: #ffffff;
+    color: #17362a;
+    border: 1px solid #e7e8df;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(31, 93, 66, 0.06);
 }
 
 .bw-progress-header {
@@ -570,21 +554,19 @@ p {
     gap: 20px;
 }
 
+
 .bw-progress-label {
     margin: 0 0 8px;
-
-    color: #f4e7a6;
-
+    color: #1f5d42;
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 1.5px;
 }
 
+
 .bw-progress-header h3 {
     margin: 0;
-
-    color: white;
-
+    color: #17362a;
     font-size: 21px;
 }
 
@@ -596,27 +578,22 @@ p {
 
 /* Progress bar */
 
+
 .progress-track {
     width: 100%;
     height: 10px;
-
     margin-top: 28px;
-
     overflow: hidden;
-
     border-radius: 999px;
-
-    background: rgba(255, 255, 255, 0.18);
+    background: #e7e8df;
 }
+
 
 .progress-bar {
     width: 0;
     height: 100%;
-
     border-radius: 999px;
-
-    background: #f4e7a6;
-
+    background: #1f5d42;
     transition: width 0.5s ease;
 }
 
@@ -651,6 +628,22 @@ p {
     border-radius: 50%;
 
     background: rgba(255, 255, 255, 0.25);
+}
+
+.week-dot {
+    background-color: #e5e7eb;
+    border: 2px solid #d1d5db;
+    box-sizing: border-box;
+}
+
+.week-indicator.completed .week-dot {
+    background-color: #1f5d42;
+    border-color: #1f5d42;
+}
+
+.week-indicator.active .week-dot {
+    background-color: #f4e7a6;
+    border-color: #1f5d42;
 }
 
 .week-indicator.completed {
@@ -746,42 +739,43 @@ p {
 
 .mentor-tools {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin-top: 25px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 18px;
 }
+
 
 .mentor-tool {
-    padding: 22px;
-
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 16px;
-
-    background: rgba(255, 255, 255, 0.08);
-
-    color: white;
-
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px;
+    min-height: 75px;
+    border: 1px solid #e7e8df;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #17362a;
     text-align: left;
-
     cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.mentor-tool strong {
-    display: block;
-
-    margin-bottom: 7px;
-
-    font-size: 16px;
+.mentor-tools {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 18px;
 }
 
 .mentor-tool span {
-    color: rgba(255, 255, 255, 0.65);
-
     font-size: 13px;
+    line-height: 1.5;
+    color: #66756b;
 }
 
 .mentor-tool:hover {
-    background: rgba(255, 255, 255, 0.14);
+    border-color: #1f5d42;
+    box-shadow: 0 4px 12px rgba(31, 93, 66, 0.08);
 }
 
 @media (max-width: 700px) {

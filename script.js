@@ -1,8 +1,5 @@
-// Main website JavaScript
-// Authentication is handled in auth.js
 
 document.addEventListener("DOMContentLoaded", async () => {
-
     const classDate = document.getElementById("class-date");
     const classWeek = document.getElementById("class-week");
     const progressWeek = document.getElementById("progress-week");
@@ -12,19 +9,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!classDate || !classWeek) return;
 
-    // ==========================================
-    // 1. PROGRAMME START DATE
-    // ==========================================
+    const DAY_MS = 24 * 60 * 60 * 1000;
+    const WEEK_MS = 7 * DAY_MS;
+    const startDate = new Date(Date.UTC(2026, 8, 27));
 
-    // Week 1 started on Sunday, September 27, 2026
-    const startDate = new Date("2026-09-27T00:00:00+01:00");
-
-
-    // ==========================================
-    // 2. GET CURRENT NIGERIAN DATE & TIME
-    // ==========================================
-
-    const nigeriaParts = new Intl.DateTimeFormat("en-US", {
+    // Get the current date and time in Nigeria.
+    const parts = new Intl.DateTimeFormat("en-GB", {
         timeZone: "Africa/Lagos",
         year: "numeric",
         month: "2-digit",
@@ -35,62 +25,74 @@ document.addEventListener("DOMContentLoaded", async () => {
     }).formatToParts(new Date());
 
     const getPart = (type) =>
-        nigeriaParts.find(part => part.type === type)?.value;
+        parts.find((part) => part.type === type)?.value;
 
-    const nigeriaYear = Number(getPart("year"));
-    const nigeriaMonth = Number(getPart("month"));
-    const nigeriaDay = Number(getPart("day"));
-    const nigeriaHour = Number(getPart("hour"));
-    const nigeriaMinute = Number(getPart("minute"));
+    const year = Number(getPart("year"));
+    const month = Number(getPart("month"));
+    const day = Number(getPart("day"));
+    const hour = Number(getPart("hour"));
 
-    const today = new Date(
-        `${nigeriaYear}-${String(nigeriaMonth).padStart(2, "0")}-${String(nigeriaDay).padStart(2, "0")}T00:00:00+01:00`
-    );
-
-
-    // ==========================================
-    // 3. WORK OUT THE CURRENT/NEXT WEEK
-    // ==========================================
-
+    const today = new Date(Date.UTC(year, month - 1, day));
     const daysPassed = Math.floor(
-        (today - startDate) / (1000 * 60 * 60 * 24)
+        (today.getTime() - startDate.getTime()) / DAY_MS
+    );
+    const dayOfWeek = today.getUTCDay();
+
+    const programmeCompleted =
+        daysPassed > 35 ||
+        (daysPassed === 35 && dayOfWeek === 0 && hour >= 19);
+
+    // Calculate the current programme week.
+    const currentWeek = Math.max(
+        1,
+        Math.min(6, Math.floor(daysPassed / 7) + 1)
     );
 
-    let weekNumber = Math.floor(daysPassed / 7) + 1;
-
-    // If Sunday class has already ended at 7 PM,
-    // move to the following week's class.
-    const dayOfWeek = today.getDay();
-
-    if (
-        dayOfWeek === 0 &&
-        (nigeriaHour > 19 || (nigeriaHour === 19 && nigeriaMinute >= 0))
-    ) {
-        weekNumber += 1;
+    // Update the progress heading and bar.
+    if (progressWeek) {
+        progressWeek.textContent = programmeCompleted
+            ? "Programme completed"
+            : `Week ${currentWeek} of 6`;
     }
 
+    if (progressBar) {
+        progressBar.style.width = programmeCompleted
+            ? "100%"
+            : `${(currentWeek / 6) * 100}%`;
+    }
 
-    // ==========================================
-    // 4. PROGRAMME COMPLETED
-    // ==========================================
+    // Update the six week indicators.
+    weekIndicators.forEach((indicator, index) => {
+        const week = index + 1;
 
-    if (weekNumber > 6) {
+        indicator.classList.remove("completed", "active");
 
+        if (programmeCompleted || week < currentWeek) {
+            indicator.classList.add("completed");
+        } else if (week === currentWeek) {
+            indicator.classList.add("active");
+        }
+    });
+
+    // Keep the Join Live button visible.
+    if (meetLink) {
+        meetLink.innerHTML =
+            '<span class="live-dot"></span> JOIN LIVE <span class="arrow">→</span>';
+
+        meetLink.removeAttribute("href");
+
+        // Do nothing when no meeting link has been added.
+        meetLink.onclick = (event) => {
+            if (!meetLink.getAttribute("href")) {
+                event.preventDefault();
+            }
+        };
+    }
+
+    // Stop here if all six weeks are complete.
+    if (programmeCompleted) {
         classDate.textContent = "Programme completed";
         classWeek.textContent = "6 Weeks completed";
-
-        if (progressWeek) {
-            progressWeek.textContent = "Programme completed";
-        }
-
-        if (progressBar) {
-            progressBar.style.width = "100%";
-        }
-
-        weekIndicators.forEach((indicator) => {
-            indicator.classList.add("completed");
-            indicator.classList.remove("active");
-        });
 
         if (meetLink) {
             meetLink.removeAttribute("href");
@@ -100,104 +102,61 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
+    // Calculate the next Sunday class.
+    let nextClassDate;
 
-    // ==========================================
-    // 5. CALCULATE NEXT CLASS DATE
-    // ==========================================
+    if (today.getTime() < startDate.getTime()) {
+        nextClassDate = new Date(startDate);
+    } else {
+        let daysUntilSunday = (7 - dayOfWeek) % 7;
 
-    const nextClassDate = new Date(startDate);
+        if (daysUntilSunday === 0 && hour >= 19) {
+            daysUntilSunday = 7;
+        }
 
-    nextClassDate.setDate(
-        startDate.getDate() + ((weekNumber - 1) * 7)
-    );
+        nextClassDate = new Date(
+            today.getTime() + daysUntilSunday * DAY_MS
+        );
+    }
 
+    const nextClassWeek =
+        Math.floor(
+            (nextClassDate.getTime() - startDate.getTime()) / WEEK_MS
+        ) + 1;
 
-    // ==========================================
-    // 6. DISPLAY CLASS DATE
-    // ==========================================
-
-    const formattedDate = nextClassDate.toLocaleDateString("en-NG", {
+    // Display the next class date.
+    classDate.textContent = nextClassDate.toLocaleDateString("en-NG", {
         timeZone: "Africa/Lagos",
         weekday: "long",
-        month: "long",
         day: "numeric",
+        month: "long",
         year: "numeric"
     });
 
-    classDate.textContent = formattedDate;
-    classWeek.textContent = `Week ${weekNumber} of 6`;
+    classWeek.textContent = `Week ${nextClassWeek} of 6`;
 
-
-    // ==========================================
-    // 7. UPDATE PROGRAMME PROGRESS
-    // ==========================================
-
-    if (progressWeek) {
-        progressWeek.textContent = `Week ${weekNumber} of 6`;
-    }
-
-
-    // ==========================================
-    // 8. UPDATE PROGRESS BAR
-    // ==========================================
-
-    if (progressBar) {
-        const progressPercentage = (weekNumber / 6) * 100;
-        progressBar.style.width = `${progressPercentage}%`;
-    }
-
-
-    // ==========================================
-    // 9. UPDATE WEEK INDICATORS
-    // ==========================================
-
-    weekIndicators.forEach((indicator, index) => {
-
-        const week = index + 1;
-
-        indicator.classList.remove("completed", "active");
-
-        if (week < weekNumber) {
-            indicator.classList.add("completed");
-        }
-
-        if (week === weekNumber) {
-            indicator.classList.add("active");
-        }
-    });
-
-
-    // ==========================================
-    // 10. GET GOOGLE MEET LINK FROM SUPABASE
-    // ==========================================
-
+    // Load the next class's Google Meet link.
     if (meetLink) {
+        try {
+            const { data, error } = await supabaseClient
+                .from("classes")
+                .select("meet_link")
+                .eq("week_number", nextClassWeek)
+                .maybeSingle();
 
-        const { data, error } = await supabaseClient
-            .from("classes")
-            .select("meet_link")
-            .eq("week_number", weekNumber)
-            .single();
-
-        if (error) {
-
-            console.error("Could not load Meet link:", error);
-
-            meetLink.removeAttribute("href");
-            meetLink.textContent = "MEET LINK NOT AVAILABLE";
-
-        } else if (data && data.meet_link) {
-
-            // Put the Meet link on the JOIN LIVE button
-            meetLink.href = data.meet_link;
-
-        } else {
-
-            // No link has been added to Supabase yet
-            meetLink.removeAttribute("href");
-            meetLink.textContent = "MEET LINK NOT AVAILABLE";
-
+            if (error) {
+                console.error("Could not load Meet link:", error);
+            } else if (data?.meet_link) {
+                meetLink.href = data.meet_link;
+                meetLink.target = "_blank";
+                meetLink.rel = "noopener noreferrer";
+            }
+        } catch (error) {
+            console.error("Unexpected error loading Meet link:", error);
         }
-    }
 
+        // Keep the button label even when Supabase has no link.
+        meetLink.innerHTML =
+            '<span class="live-dot"></span> JOIN LIVE <span class="arrow">→</span>';
+    }
 });
