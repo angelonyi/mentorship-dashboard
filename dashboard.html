@@ -9,20 +9,35 @@
 </head>
 
 <body class="bw-dashboard-page">
-
     <main class="bw-dashboard">
 
         <!-- Top Header -->
         <header class="bw-header">
-            <div>
+            <div class="bw-header-content">
                 <p class="bw-eyebrow">BUILD WITH AI</p>
                 <h1 id="welcome-text">Welcome, Mentee</h1>
-                <p class="bw-subtitle">Your 6-week mentorship dashboard</p>
+                <p class="bw-subtitle">
+                    Your 6-week mentorship dashboard
+                </p>
             </div>
 
-            <a href="#" id="logout-btn" class="bw-logout">
-                Logout
-            </a>
+            <!-- Menu with Logout -->
+            <details class="bw-menu">
+                <summary aria-label="Open menu" title="Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <path d="M4 6h16"></path>
+                        <path d="M4 12h16"></path>
+                        <path d="M4 18h16"></path>
+                    </svg>
+                </summary>
+
+                <div class="bw-menu-panel">
+                    <a href="#" id="logout-btn" class="bw-logout">
+                        Logout
+                    </a>
+                </div>
+            </details>
         </header>
 
         <!-- Main Programme Card -->
@@ -49,6 +64,7 @@
             <!-- Programme Information -->
             <div class="bw-info-grid">
 
+                <!-- Start Date -->
                 <div class="bw-info-item">
                     <div class="bw-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
@@ -66,6 +82,7 @@
                     </div>
                 </div>
 
+                <!-- Platform -->
                 <div class="bw-info-item">
                     <div class="bw-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
@@ -83,6 +100,7 @@
                     </div>
                 </div>
 
+                <!-- Class Time -->
                 <div class="bw-info-item">
                     <div class="bw-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
@@ -100,6 +118,7 @@
                     </div>
                 </div>
 
+                <!-- Next Class -->
                 <div class="bw-info-item">
                     <div class="bw-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
@@ -127,7 +146,7 @@
                 <a href="#" id="meet-link" class="bw-join-button" target="_blank" rel="noopener noreferrer">
                     <span class="live-dot"></span>
                     JOIN LIVE
-                    <span class="arrow">→</span>
+                    <span class="arrow" aria-hidden="true">→</span>
                 </a>
             </div>
 
@@ -135,7 +154,6 @@
 
         <!-- Programme Progress -->
         <section class="bw-progress-card">
-
             <div class="bw-progress-header">
                 <div>
                     <p class="bw-progress-label">PROGRAMME PROGRESS</p>
@@ -150,7 +168,6 @@
             </div>
 
             <div class="weeks-grid">
-
                 <div class="week-indicator">
                     <div class="week-dot"></div>
                     <span>W1</span>
@@ -180,9 +197,7 @@
                     <div class="week-dot"></div>
                     <span>W6</span>
                 </div>
-
             </div>
-
         </section>
 
         <!-- Footer -->
@@ -192,7 +207,7 @@
 
     </main>
 
-    <!-- Supabase and Existing JavaScript -->
+    <!-- Existing Supabase and JavaScript Connections -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="auth.js"></script>
