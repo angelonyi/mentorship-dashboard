@@ -68,3 +68,8 @@ Build with AI is a dashboard for a six-week mentorship programme. It provides me
 - Testing on a narrow screen helps reveal layout issues that may not appear on desktop.
 - Connecting a button to a database value is only part of the work; testing the complete user journey is also important.
 - Making one change at a time helps identify problems without disturbing features that already work.
+## Deployment Update
+
+- Changed the Vercel website address to `bwai-angel.vercel.app`.
+- Tested the new address and confirmed the dashboard loads.
+- Confirmed the dashboard features remain functional after the domain change.
