@@ -545,9 +545,10 @@ p {
 }
 
 .bw-join-button {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
     gap: 12px;
     width: 100%;
     max-width: 280px;
@@ -560,6 +561,8 @@ p {
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.3px;
+    line-height: 1;
+    box-sizing: border-box;
     transition: background 0.2s ease, transform 0.2s ease;
 }
 
@@ -568,17 +571,39 @@ p {
     transform: translateY(-1px);
 }
 
+.bw-join-content {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    line-height: 1;
+}
+
+.bw-join-label {
+    display: block;
+    line-height: 1;
+}
+
+
 .live-dot {
-    width: 9px;
-    height: 9px;
+    display: block;
+    width: 8px;
+    height: 8px;
     flex-shrink: 0;
     border-radius: 50%;
-    background: #f4d96b;
+    background: #d94b55;
 }
 
 .arrow {
-    margin-left: auto;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: block;
+    margin-left: 0;
+    flex-shrink: 0;
     font-size: 22px;
+    line-height: 1;
 }
 
 /* Programme progress */
@@ -894,13 +919,24 @@ p {
         font-size: 13px;
     }
 
+
     .bw-action-area {
-        margin-top: 20px;
+        grid-column: 1 / -1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-top: 24px;
     }
 
+
     .bw-join-button {
-        max-width: none;
-        min-height: 50px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     /* Progress card */
@@ -1000,4 +1036,92 @@ p {
         padding: 8px 10px;
         font-size: 11px;
     }
+}
+
+
+/* Centre the JOIN LIVE button */
+.bw-action-area {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center;
+    width: 100% !important;
+    box-sizing: border-box;
+}
+
+.bw-join-button {
+    margin: 0 auto !important;
+}
+
+/* Position the dot on the left and keep the text group centred */
+.bw-join-button {
+    position: relative;
+    justify-content: center;
+}
+
+.bw-join-button>.live-dot {
+    position: absolute;
+    left: 20px;
+}
+
+.bw-join-content {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.bw-join-button .arrow {
+    position: static;
+    transform: none;
+    margin: 0;
+}
+
+/* Mentor dashboard hamburger menu */
+.bw-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.bw-menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #1f5d42;
+    cursor: pointer;
+    list-style: none;
+}
+
+.bw-menu-button::-webkit-details-marker {
+    display: none;
+}
+
+.bw-menu-content {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 1000;
+    min-width: 140px;
+    padding: 8px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.bw-menu-content .bw-logout {
+    display: block;
+    padding: 10px 12px;
+    color: #1f5d42;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.bw-menu-content .bw-logout:hover {
+    background: #f5f1df;
 }
